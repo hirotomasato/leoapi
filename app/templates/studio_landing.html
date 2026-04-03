@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leo Studio</title>
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/studio.css" />
+</head>
+<body class="studio-body">
+  <main class="studio-landing">
+    <header class="studio-header">
+      <div class="logo-badge">LS</div>
+      <div class="studio-title">Leo Studio</div>
+      <a href="/admin/settings" class="header-link">Admin Settings</a>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">AI IMAGE STUDIO</p>
+      <h1>Build striking visuals with a polished studio workflow.</h1>
+      <p class="hero-copy">
+        Prompt, model, ratio, and reference image in one place. Designed for fast iteration with a clean,
+        professional interface.
+      </p>
+      <div class="hero-actions">
+        <a href="/studio/dashboard" class="primary-btn">Open Studio Dashboard</a>
+        <a href="/v1/images/generations" class="ghost-btn">API Endpoint</a>
+      </div>
+    </section>
+
+    <section class="feature-grid">
+      <article class="feature-card">
+        <h3>Model Control</h3>
+        <p>Select your preferred model ID with clear, production-ready configuration.</p>
+      </article>
+      <article class="feature-card">
+        <h3>Aspect Ratio Presets</h3>
+        <p>Switch quickly between portrait, landscape, square, and classic framing.</p>
+      </article>
+      <article class="feature-card">
+        <h3>Reference Image Ready</h3>
+        <p>Paste a reference image URL and send it directly without local file persistence.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

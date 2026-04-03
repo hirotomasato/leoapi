@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LeoAPI Admin Login</title>
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body class="login-body">
+  <div class="login-card">
+    <h1>LeoAPI Admin</h1>
+    <p>Masuk untuk mengelola cookie pool, model, dan konfigurasi API secara terpusat.</p>
+    {% if error %}
+      <div class="error-box">{{ error }}</div>
+    {% endif %}
+    <form method="post" action="/admin/login" class="form-grid">
+      <label>Username</label>
+      <input name="username" placeholder="admin" required />
+      <label>Password</label>
+      <input type="password" name="password" placeholder="********" required />
+      <button type="submit">Login</button>
+    </form>
+    <small>Default login: admin / admin123. Ubah setelah deploy untuk keamanan.</small>
+  </div>
+</body>
+</html>

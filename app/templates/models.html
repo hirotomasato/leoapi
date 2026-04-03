@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="page-title-row">
+    <div>
+      <h1>Model IDs</h1>
+      <p>Simpan daftar model yang dipakai endpoint dan tentukan default model.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Tambah Model</h2>
+    <form method="post" action="/admin/models/add" class="form-grid">
+      <label>Nama Model</label>
+      <input name="name" placeholder="Optional" />
+      <label>Model ID</label>
+      <input name="model_id" placeholder="uuid model" required />
+      <button type="submit">Tambah Model</button>
+    </form>
+  </div>
+
+  <div class="panel">
+    <h2>Daftar Model</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Model ID</th>
+          <th>Default</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in models %}
+          <tr>
+            <td>{{ m.id }}</td>
+            <td>{{ m.name }}</td>
+            <td>{{ m.model_id }}</td>
+            <td>{{ 'Yes' if m.is_default else 'No' }}</td>
+            <td class="actions">
+              <form method="post" action="/admin/models/{{ m.id }}/default">
+                <button type="submit">Set Default</button>
+              </form>
+              <form method="post" action="/admin/models/{{ m.id }}/delete">
+                <button type="submit" class="danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

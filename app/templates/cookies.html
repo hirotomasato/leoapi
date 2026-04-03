@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="page-title-row">
+    <div>
+      <h1>Cookie Pool</h1>
+      <p>Kelola akun sumber token, cek balance, dan atur akun aktif/nonaktif secara cepat.</p>
+    </div>
+    <div class="inline-actions">
+      <form method="post" action="/admin/cookies/refresh">
+        <button type="submit">Refresh Balance</button>
+      </form>
+      <form method="post" action="/admin/cookies/refresh-session">
+        <button type="submit">Refresh Session</button>
+      </form>
+    </div>
+  </div>
+
+  {% if status == 'ok' and message %}
+    <div class="notice success">{{ message }}</div>
+  {% elif status == 'error' and message %}
+    <div class="notice error">{{ message }}</div>
+  {% endif %}
+
+  <div class="panel">
+    <h2>Tambah Cookie</h2>
+    <form method="post" action="/admin/cookies/add" class="form-grid">
+      <label>Full Cookie String</label>
+      <textarea name="cookie_value" rows="4" placeholder="Paste output extension (cookie=... + token=...) atau full cookie string" required></textarea>
+      <p>JWT token-only tidak diterima. Gunakan full cookie agar refresh token stabil.</p>
+      <button type="submit">Tambah Cookie</button>
+    </form>
+  </div>
+
+  <div class="panel">
+    <h2>Daftar Cookie</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Balance</th>
+          <th>Status</th>
+          <th>Last Check (Unix)</th>
+          <th>Last Error</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in cookies %}
+          <tr>
+            <td>{{ c.id }}</td>
+            <td>
+              {% set bal = c.last_balance or 0 %}
+              {% if bal > 100 %}
+                <span class="badge success">{{ bal }}</span>
+              {% elif bal > 0 %}
+                <span class="badge warning">{{ bal }}</span>
+              {% else %}
+                <span class="badge danger">0</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if c.is_active %}
+                <span class="badge success">Active</span>
+              {% else %}
+                <span class="badge neutral">Disabled</span>
+              {% endif %}
+            </td>
+            <td>{{ c.last_checked_at or 0 }}</td>
+            <td>
+              {% if c.last_error %}
+                <span class="badge danger">{{ c.last_error }}</span>
+              {% else %}
+                <span class="badge success">OK</span>
+              {% endif %}
+            </td>
+            <td class="actions">
+              <form method="post" action="/admin/cookies/{{ c.id }}/toggle">
+                <input type="hidden" name="enabled" value="{{ '0' if c.is_active else '1' }}" />
+                <button type="submit">{{ 'Disable' if c.is_active else 'Enable' }}</button>
+              </form>
+              <form method="post" action="/admin/cookies/{{ c.id }}/delete">
+                <button type="submit" class="danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

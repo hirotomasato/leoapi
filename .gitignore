@@ -1,0 +1,18 @@
+# Python cache and virtualenv
+__pycache__/
+*.py[cod]
+.venv/
+
+# Local runtime data
+data/
+backups/
+
+# Local auth/cookie samples
+auth.txt
+cktes.txt
+leo1.json
+tes.py
+
+# OS/editor
+.DS_Store
+.vscode/

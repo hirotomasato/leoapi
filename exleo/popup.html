@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ExLeo Cookie Exporter</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <div class="logo-wrap">
+          <img src="icons/icon48.png" alt="ExLeo" class="logo" />
+        </div>
+        <div>
+          <h1>ExLeo</h1>
+          <p>Leonardo full cookie exporter</p>
+        </div>
+      </header>
+
+      <section class="panel controls">
+        <button id="fetchBtn" class="btn primary">Ambil Full Cookie</button>
+        <div class="actions-row">
+          <button id="copyBtn" class="btn ghost" disabled>Copy</button>
+          <button id="saveBtn" class="btn ghost" disabled>Simpan .txt</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <label for="cookieOutput">Cookie Output</label>
+        <textarea id="cookieOutput" rows="8" placeholder="Klik 'Ambil Full Cookie'..."></textarea>
+      </section>
+
+      <footer class="status" id="statusText">Siap.</footer>
+    </main>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

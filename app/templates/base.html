@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ title or 'LeoAPI Admin' }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body class="admin-body">
+  <div class="app-shell">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="brand-wrap">
+          <div class="brand">LeoAPI Admin</div>
+          <div class="brand-mini">LA</div>
+        </div>
+      </div>
+      <nav>
+        <a class="{% if request.url.path.startswith('/admin/dashboard') %}active{% endif %}" href="/admin/dashboard" data-label="Dashboard">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13h8V3H3v10zm10 8h8V3h-8v18zM3 21h8v-6H3v6z" fill="currentColor"/></svg>
+          </span>
+          <span class="nav-label">Dashboard</span>
+        </a>
+        <a class="{% if request.url.path.startswith('/admin/cookies') %}active{% endif %}" href="/admin/cookies" data-label="Cookie Pool">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a5 5 0 0 0 0 10v10a5 5 0 0 0 0-10V2z" fill="currentColor"/></svg>
+          </span>
+          <span class="nav-label">Cookie Pool</span>
+        </a>
+        <a class="{% if request.url.path.startswith('/admin/models') %}active{% endif %}" href="/admin/models" data-label="Model IDs">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v4H3V5zm0 5h18v4H3v-4zm0 5h18v4H3v-4z" fill="currentColor"/></svg>
+          </span>
+          <span class="nav-label">Model IDs</span>
+        </a>
+        <a class="{% if request.url.path.startswith('/admin/settings') %}active{% endif %}" href="/admin/settings" data-label="Settings">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm9 4-2.1.8.2 2.2-2.1 1.2-1.5-1.6-2.1.9-.4 2.1h-2.4l-.4-2.1-2.1-.9-1.5 1.6-2.1-1.2.2-2.2L3 12l1.6-1.4-.2-2.2 2.1-1.2 1.5 1.6 2.1-.9.4-2.1h2.4l.4 2.1 2.1.9 1.5-1.6 2.1 1.2-.2 2.2L21 12z" fill="currentColor"/></svg>
+          </span>
+          <span class="nav-label">Settings</span>
+        </a>
+        <a href="/studio" target="_blank" rel="noreferrer" data-label="Open Studio">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v10H4V5zm2 2v6h12V7H6zm-2 9h16v3H4v-3z" fill="currentColor"/></svg>
+          </span>
+          <span class="nav-label">Open Studio</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <form action="/admin/logout" method="post">
+          <button class="ghost-btn" type="submit" data-label="Logout">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17v-2h5V9h-5V7h8v10h-8zM4 5h8v2H6v10h6v2H4V5zm13.6 7-2.6 2.6-1.4-1.4 1.2-1.2H9v-2h5.8l-1.2-1.2 1.4-1.4 2.6 2.6z" fill="currentColor"/></svg>
+            </span>
+            <span class="nav-label">Logout</span>
+          </button>
+        </form>
+        <button type="button" class="icon-btn sidebar-toggle-btn sidebar-toggle-footer" id="sidebarToggle" aria-label="Toggle sidebar">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </aside>
+    <main class="main-content">
+      <div class="utility-bar">
+        <button type="button" class="icon-btn theme-fab" id="themeToggle" aria-label="Toggle dark mode">
+          <svg id="themeIconMoon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 14.8A9 9 0 1 1 9.2 3a7 7 0 1 0 11.8 11.8z" fill="currentColor"/>
+          </svg>
+          <svg id="themeIconSun" viewBox="0 0 24 24" aria-hidden="true" style="display:none;">
+            <path d="M12 4.5a1 1 0 0 1 1 1V7a1 1 0 1 1-2 0V5.5a1 1 0 0 1 1-1zm0 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zm7.5-4.5a1 1 0 1 1 0 2H18a1 1 0 1 1 0-2h1.5zM7 12a1 1 0 0 1-1 1H4.5a1 1 0 1 1 0-2H6a1 1 0 0 1 1 1zm9.19 5.78a1 1 0 0 1 1.42 0l1.06 1.06a1 1 0 1 1-1.41 1.41l-1.07-1.06a1 1 0 0 1 0-1.41zM6.74 6.74a1 1 0 0 1 1.41 0L9.2 7.8a1 1 0 0 1-1.41 1.4L6.74 8.16a1 1 0 0 1 0-1.42zm10.52 0a1 1 0 0 1 0 1.42L16.2 9.2a1 1 0 0 1-1.4-1.41l1.05-1.05a1 1 0 0 1 1.41 0zM7.8 14.8a1 1 0 0 1 1.4 1.4l-1.05 1.06a1 1 0 1 1-1.41-1.41L7.8 14.8z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+      <button type="button" class="mobile-menu-btn" id="mobileSidebarToggle" aria-label="Open sidebar">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <section class="page-shell">
+        {% block content %}{% endblock %}
+      </section>
+    </main>
+  </div>
+  <script>
+    (function () {
+      var body = document.body;
+      var toggleBtn = document.getElementById('sidebarToggle');
+      var themeToggleBtn = document.getElementById('themeToggle');
+      var moonIcon = document.getElementById('themeIconMoon');
+      var sunIcon = document.getElementById('themeIconSun');
+      var mobileToggleBtn = document.getElementById('mobileSidebarToggle');
+      var overlay = document.getElementById('sidebarOverlay');
+      var key = 'leoadmin.sidebarCollapsed';
+      var themeKey = 'leoadmin.theme';
+
+      function syncThemeIcon() {
+        var dark = body.classList.contains('theme-dark');
+        if (moonIcon) moonIcon.style.display = dark ? 'none' : 'block';
+        if (sunIcon) sunIcon.style.display = dark ? 'block' : 'none';
+      }
+
+      if (localStorage.getItem(themeKey) === 'dark') {
+        body.classList.add('theme-dark');
+      }
+      syncThemeIcon();
+
+      if (localStorage.getItem(key) === '1') {
+        body.classList.add('sidebar-collapsed');
+      }
+
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', function () {
+          body.classList.toggle('sidebar-collapsed');
+          localStorage.setItem(key, body.classList.contains('sidebar-collapsed') ? '1' : '0');
+        });
+      }
+
+      if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', function () {
+          body.classList.toggle('theme-dark');
+          localStorage.setItem(themeKey, body.classList.contains('theme-dark') ? 'dark' : 'light');
+          syncThemeIcon();
+        });
+      }
+
+      if (mobileToggleBtn) {
+        mobileToggleBtn.addEventListener('click', function () {
+          body.classList.toggle('sidebar-open');
+        });
+      }
+
+      if (overlay) {
+        overlay.addEventListener('click', function () {
+          body.classList.remove('sidebar-open');
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

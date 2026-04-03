@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="page-title-row">
+    <div>
+      <h1>Dashboard</h1>
+      <p>Live operational status untuk cookie pool dan endpoint produksi.</p>
+    </div>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Ready Accounts</h3>
+      <p>{{ cookie_health.ready_accounts }}</p>
+      <small class="metric-note">Active + balance &gt; 0</small>
+    </div>
+    <div class="card">
+      <h3>Need Attention</h3>
+      <p>{{ cookie_health.depleted_accounts }}</p>
+      <small class="metric-note">Active + balance = 0</small>
+    </div>
+    <div class="card">
+      <h3>Active Total Balance</h3>
+      <p>{{ cookie_health.active_total_balance }}</p>
+      <small class="metric-note">Estimated credits from active accounts</small>
+    </div>
+    <div class="card">
+      <h3>Account Coverage</h3>
+      <p>{{ cookie_health.active_total }}/{{ cookie_health.total_accounts }}</p>
+      <small class="metric-note">Active / total accounts</small>
+    </div>
+    <div class="card">
+      <h3>Total Models</h3>
+      <p>{{ stats.total_models }}</p>
+      <small class="metric-note">Registered model IDs</small>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Live Account Snapshot</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Balance</th>
+          <th>Status</th>
+          <th>Last Check</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in cookie_snapshot %}
+          <tr>
+            <td>{{ a.id }}</td>
+            <td>{{ a.balance }}</td>
+            <td>
+              {% if a.status == 'READY' %}
+                <span class="badge success">READY</span>
+              {% elif a.status == 'DEPLETED' %}
+                <span class="badge warning">DEPLETED</span>
+              {% else %}
+                <span class="badge neutral">DISABLED</span>
+              {% endif %}
+            </td>
+            <td>{{ a.last_checked_human }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h2>OpenAI Compatible Endpoint</h2>
+    <p><strong>POST /v1/images/generations</strong></p>
+    <p>Default aspect ratio aktif: <strong>{{ default_aspect_ratio }}</strong></p>
+    <p>Saat balance akun aktif habis, request otomatis dipindah ke akun aktif berikutnya.</p>
+    <p>Last sync cookie profile: <strong>{{ cookie_health.last_sync_human }}</strong></p>
+  </div>
+{% endblock %}

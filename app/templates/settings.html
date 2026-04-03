@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="page-title-row">
+    <div>
+      <h1>Settings</h1>
+      <p>Konfigurasi global untuk perilaku default endpoint generasi gambar.</p>
+    </div>
+  </div>
+
+  {% if status == 'ok' and message %}
+    <div class="notice success">{{ message }}</div>
+  {% elif status == 'error' and message %}
+    <div class="notice error">{{ message }}</div>
+  {% endif %}
+
+  <div class="panel">
+    <h2>Default Aspect Ratio</h2>
+    <form method="post" action="/admin/settings/aspect-ratio" class="form-grid">
+      <label>Aspect Ratio</label>
+      <select name="aspect_ratio">
+        {% for ratio in supported %}
+          <option value="{{ ratio }}" {% if ratio == current_aspect_ratio %}selected{% endif %}>{{ ratio }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">Simpan</button>
+    </form>
+    <p>Preset rasio yang didukung: 16:9, 9:16, 1:1, 4:3.</p>
+  </div>
+
+  <div class="panel">
+    <h2>Auto Save Hasil Gambar</h2>
+    <form method="post" action="/admin/settings/auto-save-images" class="form-grid">
+      <label>
+        <input type="checkbox" name="auto_save_images" value="1" {% if auto_save_images %}checked{% endif %} />
+        Aktifkan auto-save hasil request ke folder lokal
+      </label>
+      <label>Folder Simpan</label>
+      <input type="text" name="save_images_dir" value="{{ save_images_dir }}" placeholder="data/generated" />
+      <button type="submit">Simpan Pengaturan</button>
+    </form>
+    <p>Jika ON, setiap request sukses akan simpan file gambar ke folder ini dan path-nya ikut di response.</p>
+  </div>
+
+  <div class="panel">
+    <h2>Telegram Bot Gateway</h2>
+    <form method="post" action="/admin/settings/telegram" class="form-grid">
+      <label>
+        <input type="checkbox" name="telegram_enabled" value="1" {% if telegram_enabled %}checked{% endif %} />
+        Aktifkan Telegram bot
+      </label>
+      <label>Bot Token</label>
+      <input
+        type="password"
+        name="telegram_bot_token"
+        value="{{ telegram_bot_token }}"
+        placeholder="123456:AA..."
+        autocomplete="off"
+      />
+      <label>Allowed Chat ID (opsional)</label>
+      <textarea
+        name="telegram_allowed_chat_ids"
+        rows="3"
+        placeholder="123456789, -100987654321"
+      >{{ telegram_allowed_chat_ids }}</textarea>
+      <button type="submit">Simpan Telegram Config</button>
+    </form>
+    <p>
+      Status runtime: {% if telegram_running %}<strong>RUNNING</strong>{% else %}<strong>STOPPED</strong>{% endif %}.<br />
+      Jika Allowed Chat ID kosong, semua chat yang menghubungi bot akan bisa pakai endpoint.
+    </p>
+    <p>
+      UX bot: user pilih model dan ratio via menu, upload reference image di chat, lalu kirim prompt.
+      Hasil gambar langsung dikirim ke Telegram (download dari URL result, tidak disimpan ke server).
+    </p>
+    <form method="post" action="/admin/settings/telegram/test" class="form-grid" style="margin-top:12px;">
+      <label>Chat ID Test (opsional)</label>
+      <input type="text" name="test_chat_id" placeholder="123456789 atau -1001234567890" />
+      <button type="submit">Test Telegram Connection</button>
+    </form>
+  </div>
+
+  <div class="panel">
+    <h2>App Studio</h2>
+    <form method="post" action="/admin/settings/studio" class="form-grid">
+      <label>
+        <input type="checkbox" name="studio_enabled" value="1" {% if studio_enabled %}checked{% endif %} />
+        Aktifkan Studio (landing + dashboard generator)
+      </label>
+      <label>Proxy Base URL (opsional)</label>
+      <input
+        type="text"
+        name="studio_proxy_base_url"
+        value="{{ studio_proxy_base_url }}"
+        placeholder="https://your-proxy.example.com"
+      />
+      <label>Studio Login Username</label>
+      <input
+        type="text"
+        name="studio_auth_username"
+        value="{{ studio_auth_username }}"
+        placeholder="studio"
+      />
+      <label>Studio Login Password (kosongkan jika tidak ingin ganti)</label>
+      <input
+        type="password"
+        name="studio_auth_password"
+        value=""
+        placeholder="********"
+        autocomplete="new-password"
+      />
+      <button type="submit">Simpan Studio Settings</button>
+    </form>
+    <p>
+      Jika proxy diisi, request dari Studio akan diteruskan ke <strong>{proxy}/v1/images/generations</strong>.
+      Jika kosong, Studio memakai engine lokal project ini.
+    </p>
+    <p>
+      Studio sekarang wajib login sebelum akses dashboard/generate.
+    </p>
+    <p>
+      Link Studio: <a href="/studio" target="_blank" rel="noreferrer">/studio</a>
+    </p>
+  </div>
+{% endblock %}
