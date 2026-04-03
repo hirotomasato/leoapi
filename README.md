@@ -2,7 +2,7 @@
 
 > Status: Project ini masih dalam tahap pengembangan aktif (work in progress). Beberapa fitur, flow auth, dan endpoint dapat berubah sewaktu-waktu.
 
-LeoAPI adalah backend FastAPI untuk image generation Leonardo dengan endpoint OpenAI-compatible, Admin Dashboard, Studio UI modern, Telegram bot, dan Cookie Pool berbasis full-cookie.
+LeoAPI adalah backend FastAPI untuk image generation Leonardo dengan endpoint OpenAI-compatible, Admin Dashboard, Studio UI, Telegram bot, dan Cookie Pool berbasis full-cookie.
 
 ## Fitur Utama
 
@@ -14,7 +14,7 @@ LeoAPI adalah backend FastAPI untuk image generation Leonardo dengan endpoint Op
 | Auto refresh token | JWT fallback di-refresh otomatis dari full cookie saat runtime |
 | Studio Dashboard | Batch submit + polling job progress realtime |
 | Studio Prompt Builder | Multiline draft, add/edit/delete, hidden preview item |
-| Studio UX | Dark mode, modern sidebar, compact lightbox preview |
+| Studio UX | Dark mode, sidebar rapi, compact lightbox preview |
 | Telegram Bot | Enable/disable, token, allowlist chat IDs, test connection |
 | Auto save image | Simpan hasil generation ke folder lokal (opsional) |
 | Persistensi | SQLite di data/app.db |
